@@ -3,6 +3,7 @@
 namespace Lifeonscreen\Google2fa\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Lifeonscreen\Google2fa\Google2FAAuthenticator;
@@ -23,12 +24,12 @@ class Google2fa
      *
      * @param Request $request
      * @param Closure $next
-     * @return mixed
+     * @return Response|RedirectResponse
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response|RedirectResponse
     {
         if (!config('lifeonscreen2fa.enabled')) {
             return $next($request);
