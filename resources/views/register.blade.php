@@ -22,7 +22,8 @@
 <div class="h-full">
     <div class="px-view py-view mx-auto">
         <div class="mx-auto py-8 max-w-sm text-center text-90">
-            @include('nova::partials.logo')
+            <img class="inline-block" src="{{asset('img/nova_logo.svg')}}" width="137" height="27"
+                 alt="{{config('app.name')}}"/>
         </div>
 
         <form id="register_form" class="bg-white shadow rounded-lg p-8 max-w-xl mx-auto" method="POST"
@@ -54,7 +55,8 @@
                     @endif
                     <label class="block font-bold mb-2" for="co">Secret</label>
                     <input class="form-control form-input form-input-bordered w-full" id="secret" type="number"
-                           name="{{ config('google2fa.otp_input') }}" value="" required="required" onkeyup="checkAutoSubmit(this)" autofocus="">
+                           name="{{ config('google2fa.otp_input') }}" value="" required="required"
+                           onkeyup="checkAutoSubmit(this)" autofocus="">
                 </div>
                 <button class="w-1/2 btn btn-default btn-primary hover:bg-primary-dark" type="submit">
                     Confirm

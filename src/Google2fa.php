@@ -2,8 +2,13 @@
 
 namespace Lifeonscreen\Google2fa;
 
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Laravel\Nova\Tool;
 use PragmaRX\Google2FALaravel\Google2FA as Google2FALaravelGoogle2FA;
+use PragmaRX\Google2FAQRCode\Exceptions\MissingQrCodeServiceException;
 use PragmaRX\Google2FAQRCode\Google2FA as G2fa;
 use PragmaRX\Recovery\Recovery;
 use Illuminate\Support\Facades\Request;
@@ -15,15 +20,15 @@ class Google2fa extends Tool
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
-     * @throws \PragmaRX\Google2FA\Exceptions\InsecureCallException
+     * @return Factory|RedirectResponse|View
+     * @throws MissingQrCodeServiceException
      */
-    public function confirm()
+    public function confirm(): Factory|View|RedirectResponse
     {
         if (app(Google2FAAuthenticator::class)->isAuthenticated()) {
             auth()->user()->user2fa->google2fa_enable = 1;
@@ -47,10 +52,10 @@ class Google2fa extends Tool
     }
 
     /**
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     * @throws \PragmaRX\Google2FA\Exceptions\InsecureCallException
+     * @return Factory|View
+     * @throws MissingQrCodeServiceException
      */
-    public function register()
+    public function register(): Factory|View
     {
         $google2fa = new G2fa();
 
@@ -66,15 +71,15 @@ class Google2fa extends Tool
 
     }
 
-    private function isRecoveryValid($recover, $recoveryHashes)
+    private function isRecoveryValid($recover, $recoveryHashes): bool
     {
         return in_array($recover, $recoveryHashes);
     }
 
     /**
-     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\View\View
+     * @return Factory|Application|\Illuminate\Contracts\View\View|RedirectResponse
      */
-    public function authenticate()
+    public function authenticate(): \Illuminate\Contracts\View\View|Factory|RedirectResponse|Application
     {
         if ($recover = Request::get('recover')) {
             if ($this->isRecoveryValid($recover, json_decode(decrypt(auth()->user()->user2fa->recovery), true)) === false) {
@@ -115,5 +120,10 @@ class Google2fa extends Tool
         $data['error'] = 'One time password is invalid.';
 
         return view('google2fa::authenticate', $data);
+    }
+
+    public function menu(\Illuminate\Http\Request $request)
+    {
+        // TODO: Implement menu() method.
     }
 }

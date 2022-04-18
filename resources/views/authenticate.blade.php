@@ -42,7 +42,8 @@
 <div class="h-full">
     <div class="px-view py-view mx-auto">
         <div class="mx-auto py-8 max-w-sm text-center text-90">
-            @include('nova::partials.logo')
+            <img class="inline-block" src="{{asset('img/nova_logo.svg')}}" width="137" height="27"
+                 alt="{{config('app.name')}}"/>
         </div>
 
         <form id="authenticate_form" class="bg-white shadow rounded-lg p-8 max-w-xl mx-auto" method="POST"
@@ -69,12 +70,14 @@
                     <div id="secret_div">
                         <label class="block font-bold mb-2" for="co">One Time Password</label>
                         <input class="w-full form-control form-input form-input-bordered" id="secret" type="number"
-                               name="{{ config('google2fa.otp_input') }}" value="" onkeyup="checkAutoSubmit(this)" placeholder="{{ __('Enter the code...') }}" autofocus="">
+                               name="{{ config('google2fa.otp_input') }}" value="" onkeyup="checkAutoSubmit(this)"
+                               placeholder="{{ __('Enter the code...') }}" autofocus="">
                     </div>
 
                     <div id="recover_div" style="display: none;">
                         <label class="block font-bold mb-2" for="co">Recovery code</label>
-                        <input class="w-full form-control form-input form-input-bordered" placeholder="{{ __('Enter the recovery code...') }}" id="recover" type="text"
+                        <input class="w-full form-control form-input form-input-bordered"
+                               placeholder="{{ __('Enter the recovery code...') }}" id="recover" type="text"
                                name="recover" value="" autofocus="">
                     </div>
                 </div>

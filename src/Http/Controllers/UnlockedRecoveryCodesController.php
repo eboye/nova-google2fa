@@ -6,10 +6,14 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UnlockedRecoveryCodesController extends Controller
 {
-    public function store(Request $request)
+    /**
+     * @throws ValidationException
+     */
+    #[ArrayShape(['success' => "bool", 'recovery_codes' => "mixed"])] public function store(Request $request): array
     {
         $request->validate([
             'password' => ['required', 'string'],

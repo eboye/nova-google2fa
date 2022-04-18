@@ -11,7 +11,7 @@ use PragmaRX\Google2FALaravel\Support\Authenticator;
  */
 class Google2FAAuthenticator extends Authenticator
 {
-    protected function canPassWithoutCheckingOTP()
+    protected function canPassWithoutCheckingOTP(): bool
     {
         return
             !$this->isEnabled() ||
@@ -23,10 +23,10 @@ class Google2FAAuthenticator extends Authenticator
      * @return mixed
      * @throws Exception
      */
-    protected function getGoogle2FASecretKey()
+    protected function getGoogle2FASecretKey(): mixed
     {
         $secret = $this->getUser()->user2fa->{$this->config('otp_secret_column')};
-        if (is_null($secret) || empty($secret)) {
+        if (empty($secret)) {
             throw new Exception('Secret key cannot be empty.');
         }
 

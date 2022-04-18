@@ -3,7 +3,11 @@
 namespace Lifeonscreen\Google2fa\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Lifeonscreen\Google2fa\Google2FAAuthenticator;
+use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
+use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
+use PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException;
 use PragmaRX\Google2FA\Google2FA as G2fa;
 use PragmaRX\Recovery\Recovery;
 
@@ -16,12 +20,14 @@ class Google2fa
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Closure $next
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
-     * @throws \PragmaRX\Google2FA\Exceptions\InsecureCallException
+     * @throws IncompatibleWithGoogleAuthenticatorException
+     * @throws InvalidCharactersException
+     * @throws SecretKeyTooShortException
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         if (!config('lifeonscreen2fa.enabled')) {
             return $next($request);
@@ -30,7 +36,7 @@ class Google2fa
             || $request->path() === 'los/2fa/register') {
             return $next($request);
         }
-        $authenticator = app(Google2FAAuthenticator::class)->boot($request);
+        $authenticator = app(Google2FAAuthenticator::class);
         if (auth()->guest() || $authenticator->isAuthenticated()) {
             return $next($request);
         }

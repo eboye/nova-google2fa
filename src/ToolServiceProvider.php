@@ -13,7 +13,7 @@ class ToolServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'google2fa');
         $this->loadViewsFrom(__DIR__ . '/../../../laravel/nova/resources/views', 'nova');
@@ -41,7 +41,7 @@ class ToolServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    protected function routes()
+    protected function routes(): void
     {
         if ($this->app->routesAreCached()) {
             return;
@@ -57,7 +57,7 @@ class ToolServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/lifeonscreen2fa.php', 'lifeonscreen2fa');
     }
