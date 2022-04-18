@@ -4,6 +4,7 @@ namespace Lifeonscreen\Google2fa\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Lifeonscreen\Google2fa\Google2FAAuthenticator;
 use PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException;
 use PragmaRX\Google2FA\Exceptions\InvalidCharactersException;
@@ -27,7 +28,7 @@ class Google2fa
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      */
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): Response
     {
         if (!config('lifeonscreen2fa.enabled')) {
             return $next($request);
