@@ -24,13 +24,13 @@ class Google2fa
      * Handle an incoming request.
      *
      * @param Request $request
-     * @param Closure $next
+     * @param  \Closure(\Illuminate\Http\Request):mixed  $next
      * @return Response|RedirectResponse|JsonResponse
      * @throws IncompatibleWithGoogleAuthenticatorException
      * @throws InvalidCharactersException
      * @throws SecretKeyTooShortException
      */
-    public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse
+    public function handle(Request $request, Closure $next)
     {
         if (!config('lifeonscreen2fa.enabled')) {
             return $next($request);
